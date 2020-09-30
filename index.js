@@ -26,8 +26,9 @@ function generateStartTag(tag) {
 }
 
 
-function tagMatches(tag1, tag2) {
-    return tag1 === tag2
+function tagMatches(startTag, closingTag) {
+    const expectedClosingTag = generateClosingTag(startTag)
+    return expectedClosingTag === closingTag
 }
 
 function findStartTags(input) {
@@ -43,7 +44,7 @@ function findEndTags(input) {
 function tagChecker(input) {
     let startTag
     let endTag
-    let startTagList = findStartTags(input)
+    let startTagList = findStartTags(input).reverse()
     let endTagList = findEndTags(input)
     const expectedEndTags = startTagList.map(generateClosingTag)
     const expectedStartTags = endTagList.map(generateStartTag)
@@ -57,8 +58,8 @@ function tagChecker(input) {
             return `Expected ${startTag} found #`
         }
         startTag = startTagList.pop()
-        endTag = startTagList.pop()
-
+        endTag = endTagList.pop()
+        console.log('open,close', startTag, endTag)
         if(!tagMatches(startTag, endTag)){
             return `Expected ${startTag} found ${endTag}`
         }
