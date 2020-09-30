@@ -17,8 +17,40 @@
 
 const SuccessMessage = 'Correctly tagged paragraph'
 
-function tagChecker(input) {
+function generateClosingTag(tag) {
+    return `</${tag.substr(1)}`
+}
 
+function generateStartTag(tag) {
+    return `<${tag.substr(2)}`
+}
+
+
+function findCorospondingTag(startTags, endTags) {
+
+}
+
+function findStartTags(input) {
+    const regex = new RegExp('<[A-Z]>', 'g')
+    return input.match(regex)
+}
+
+function findEndTags(input) {
+    const regex = new RegExp('</[A-Z]>', 'g')
+    return input.match(regex)
+}
+
+function tagChecker(input) {
+    let startTagList = findStartTags(input)
+    let endTagList = findEndTags(input)
+    const expectedEndTags = startTagList.map(generateClosingTag)
+    const expectedStartTags = endTagList.map(generateStartTag)
+    
+    console.log(startTagList, endTagList, expectedEndTags, expectedStartTags)
+    // while(startTagList.length > 0 && endTagList > 0){
+
+    // }
+    return SuccessMessage
 }
 
 
