@@ -50,14 +50,15 @@ function tagChecker(input) {
     
     console.log(startTagList, endTagList, expectedEndTags, expectedStartTags)
     while(startTagList.length > 0 && endTagList.length > 0){
-        if (startTagList.length = 0) {
+        if (startTagList.length === 0) {
             return `Expected # found ${endTag}`
         }
-        if (endTagList.length = 0) {
+        if (endTagList.length === 0) {
             return `Expected ${startTag} found #`
         }
         startTag = startTagList.pop()
         endTag = startTagList.pop()
+
         if(!tagMatches(startTag, endTag)){
             return `Expected ${startTag} found ${endTag}`
         }
