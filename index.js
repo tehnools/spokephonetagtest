@@ -47,7 +47,7 @@ function tagChecker(input) {
     let expectedTag
     let startTagList = findStartTags(input).reverse()
     let endTagList = findEndTags(input)
-    const expectedEndTags = startTagList.map(generateClosingTag)
+    const expectedEndTags = startTagList.map(generateClosingTag).reverse()
     const expectedStartTags = endTagList.map(generateStartTag).reverse()
     
     console.log(startTagList, endTagList, expectedEndTags, expectedStartTags)
@@ -70,7 +70,7 @@ function tagChecker(input) {
         if(!tagMatches(startTag, endTag) && endTagList.length === 0){
             return `Expected ${expectedTag} found #`
         }
-        if(!tagMatches(startTag, endTag) && expectedEndTags.length > 0){
+        if(!tagMatches(startTag, endTag) && endTagList.length > 0 && startTagList.length > 0){
             return `Expected ${expectedTag} found ${endTag}`
         }
     }
