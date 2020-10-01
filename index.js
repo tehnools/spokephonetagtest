@@ -1,19 +1,4 @@
 
-// Plan
-// Find all tags in input
-// Tags seem to be <anyUpperCaseLetter> and <closing tag anyUpperCaseLetter>
-// List all starting tags first in a list
-// once all tags found start finding starting from top
-
-
-// variables
-// need to just store the original input some where
-// need an object of symbols and their indexes. Use index as the key.
-
-// functions
-// function that finds the corrosponding closing tag. If not found then return false.
-// if no issue is found return Success if not return failed message on first occurence 
-// refactor optimise
 
 const SuccessMessage = 'Correctly tagged paragraph'
 
@@ -45,8 +30,8 @@ function tagChecker(input) {
     let startTag
     let endTag
     let expectedTag
-    let startTagList = findStartTags(input).reverse()
-    let endTagList = findEndTags(input)
+    let startTagList = findStartTags(input)
+    let endTagList = findEndTags(input).reverse()
     const expectedEndTags = startTagList.map(generateClosingTag)
     
     console.log(startTagList, endTagList, expectedEndTags)
@@ -74,6 +59,37 @@ function tagChecker(input) {
     return SuccessMessage
 }
 
+// pivot
+function tagChecker2(input){
+    let open
+    let close 
+    let expected
+    let found
+    const closeRegex = new RegExp('</[A-Z]>', 'g')
+    const openRegex = new RegExp('<[A-Z]>', 'g')
+    let openTags = input.match(openRegex)
+    let closeTags = input.match(closeRegex).reverse()
+
+    while(openTags.length > 0 && closeTags.length > 0){
+        open = openTags.pop()
+        close = closeTags.pop()
+        
+        
+        if (!open && close){
+            return `Expected # found ${close}`
+        } else if(!close && open) {
+            return `Expected ${generateClosingTag(open)} found #`
+        }
+        
+        if (open !== generateStartTag(close)){
+            return `Expected ${generateClosingTag(open)} found ${close}`
+        } else if (close !== generateStartTag(open)) {
+            return `Expected ${close} found ${generateClosingTag(open)}`
+        }
+    }
+    return SuccessMessage
+}
+
 
 
 function main(){
@@ -89,16 +105,21 @@ function main(){
     const expected4 = 'Expected # found </C>'
     const expected5 = 'Expected </B> found #'
 
-    const result1 = tagChecker(test1)
-    const result2 = tagChecker(test2)
-    const result3 = tagChecker(test3)
-    const result4 = tagChecker(test4)
-    const result5 = tagChecker(test5)
+    const result1 = tagChecker1(test1)
+    const result2 = tagChecker1(test2)
+    const result3 = tagChecker1(test3)
+    const result4 = tagChecker1(test4)
+    const result5 = tagChecker1(test5)
 
+    console.log('#1')
     console.log(result1, result1 === expected1)
+    console.log('#2')
     console.log(result2, result2 === expected2)
+    console.log('#3')
     console.log(result3, result3 === expected3)
+    console.log('#4')
     console.log(result4, result4 === expected4)
+    console.log('#5')
     console.log(result5, result5 === expected5)
 }
 
