@@ -105,11 +105,11 @@ function main(){
     const expected4 = 'Expected # found </C>'
     const expected5 = 'Expected </B> found #'
 
-    const result1 = tagChecker1(test1)
-    const result2 = tagChecker1(test2)
-    const result3 = tagChecker1(test3)
-    const result4 = tagChecker1(test4)
-    const result5 = tagChecker1(test5)
+    const result1 = tagChecker(test1)
+    const result2 = tagChecker(test2)
+    const result3 = tagChecker(test3)
+    const result4 = tagChecker(test4)
+    const result5 = tagChecker(test5)
 
     console.log('#1')
     console.log(result1, result1 === expected1)
