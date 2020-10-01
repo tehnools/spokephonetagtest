@@ -27,8 +27,8 @@ function findEndTags(input) {
 }
 
 function tagChecker(input) {
-    let startTag
-    let endTag
+    let open
+    let close
     let expectedTag
     let startTagList = findStartTags(input)
     let endTagList = findEndTags(input).reverse()
@@ -37,23 +37,18 @@ function tagChecker(input) {
     console.log(startTagList, endTagList, expectedEndTags)
     while(startTagList.length > 0 && endTagList.length > 0){
 
-        startTag = startTagList.pop()
+        open = startTagList.pop()
         expectedTag = expectedEndTags.pop()
-        endTag = endTagList.pop()     
-        if(!tagMatches(startTag, endTag) && startTagList.length === 0){
-            console.log('1startTag', startTag, 'expected', expectedTag, 'end', endTag)
-            console.log(startTagList, endTagList, expectedEndTags)
-            return `Expected # found ${endTag}`
+        close = endTagList.pop()     
+        console.log('closed undefined',!close && open, open,close);
+        if(!close && open){
+            return `Expected # found ${close}`
         }
-        if(!tagMatches(startTag, endTag) && endTagList.length === 0){
-            console.log('2startTag', startTag, 'expected', expectedTag, 'end', endTag)
-            console.log(startTagList, endTagList, expectedEndTags)
+        if(!open && close){
             return `Expected ${expectedTag} found #`
         }
-        if(!tagMatches(startTag, endTag) && endTagList.length > 0 && startTagList.length > 0){
-            console.log('3startTag', startTag, 'expected', expectedTag, 'end', endTag)
-            console.log(startTagList, endTagList, expectedEndTags)
-            return `Expected ${expectedTag} found ${endTag}`
+        if(!tagMatches(open, close) && endTagList.length > 0 && startTagList.length > 0){
+            return `Expected ${expectedTag} found ${close}`
         }
     }
     return SuccessMessage
