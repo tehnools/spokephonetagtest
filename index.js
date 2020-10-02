@@ -1,12 +1,15 @@
-
+const closeRegex = new RegExp('</[A-Z]>', 'g')
+const openRegex = new RegExp('<[A-Z]>', 'g')
 
 const SuccessMessage = 'Correctly tagged paragraph'
 
 function generateClosingTag(tag) {
+    if (tag === '#') return tag
     return `</${tag.substr(1)}`
 }
 
 function generateStartTag(tag) {
+    if (tag === '#') return tag
     return `<${tag.substr(2)}`
 }
 
@@ -26,60 +29,19 @@ function findEndTags(input) {
     return input.match(regex)
 }
 
-function tagChecker(input) {
-    let open
-    let close
-    let expectedTag
-    let startTagList = findStartTags(input)
-    let endTagList = findEndTags(input).reverse()
-    const expectedEndTags = startTagList.map(generateClosingTag)
-    
-    console.log(startTagList, endTagList, expectedEndTags)
-    while(startTagList.length > 0 && endTagList.length > 0){
-
-        open = startTagList.pop()
-        expectedTag = expectedEndTags.pop()
-        close = endTagList.pop()     
-        console.log('closed undefined',!close && open, open,close);
-        if(!close && open){
-            return `Expected # found ${close}`
-        }
-        if(!open && close){
-            return `Expected ${expectedTag} found #`
-        }
-        if(!tagMatches(open, close) && endTagList.length > 0 && startTagList.length > 0){
-            return `Expected ${expectedTag} found ${close}`
-        }
-    }
-    return SuccessMessage
-}
-
 // pivot
-function tagChecker2(input){
+function tagChecker(input){
     let open
-    let close 
     let expected
-    let found
-    const closeRegex = new RegExp('</[A-Z]>', 'g')
-    const openRegex = new RegExp('<[A-Z]>', 'g')
+    let unexpected
     let openTags = input.match(openRegex)
     let closeTags = input.match(closeRegex).reverse()
-
-    while(openTags.length > 0 && closeTags.length > 0){
-        open = openTags.pop()
-        close = closeTags.pop()
-        
-        
-        if (!open && close){
-            return `Expected # found ${close}`
-        } else if(!close && open) {
-            return `Expected ${generateClosingTag(open)} found #`
-        }
-        
-        if (open !== generateStartTag(close)){
-            return `Expected ${generateClosingTag(open)} found ${close}`
-        } else if (close !== generateStartTag(open)) {
-            return `Expected ${close} found ${generateClosingTag(open)}`
+    while(openTags.length > 0 || closeTags.length > 0){
+        open = openTags.pop() || '#'
+        expected = generateClosingTag(open) || '#'
+        unexpected = closeTags.pop() || '#'
+        if(expected !== unexpected){
+           return `Expected ${expected} found ${unexpected}`
         }
     }
     return SuccessMessage
@@ -106,15 +68,10 @@ function main(){
     const result4 = tagChecker(test4)
     const result5 = tagChecker(test5)
 
-    console.log('#1')
     console.log(result1, result1 === expected1)
-    console.log('#2')
     console.log(result2, result2 === expected2)
-    console.log('#3')
     console.log(result3, result3 === expected3)
-    console.log('#4')
     console.log(result4, result4 === expected4)
-    console.log('#5')
     console.log(result5, result5 === expected5)
 }
 
