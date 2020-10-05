@@ -1,50 +1,43 @@
-const closeRegex = new RegExp('</[A-Z]>', 'g')
-const openRegex = new RegExp('<[A-Z]>', 'g')
+const tagRegex = new RegExp('<\/*[A-Z]>', 'g')
 
 const SuccessMessage = 'Correctly tagged paragraph'
 
-function generateClosingTag(tag) {
+export function generateClosingTag(tag) {
     if (tag === '#') return tag
     return `</${tag.substr(1)}`
 }
 
-function generateStartTag(tag) {
-    if (tag === '#') return tag
-    return `<${tag.substr(2)}`
-}
+// export function generateStartTag(tag) {
+//     if (tag === '#') return tag
+//     return `<${tag.substr(2)}`
+// }
 
-
-function tagMatches(startTag, closingTag) {
-    const expectedClosingTag = generateClosingTag(startTag)
-    return expectedClosingTag === closingTag
-}
-
-function findStartTags(input) {
-    const regex = new RegExp('<[A-Z]>', 'g')
-    return input.match(regex)
-}
-
-function findEndTags(input) {
-    const regex = new RegExp('</[A-Z]>', 'g')
-    return input.match(regex)
+export function findTags(input) { 
+    return input.match(tagRegex)
 }
 
 // pivot
 function tagChecker(input){
-    let open
-    let expected
-    let unexpected
-    let openTags = input.match(openRegex)
-    let closeTags = input.match(closeRegex).reverse()
-    while(openTags.length > 0 || closeTags.length > 0){
-        open = openTags.pop() || '#'
-        expected = generateClosingTag(open) || '#'
-        unexpected = closeTags.pop() || '#'
-        if(expected !== unexpected){
-           return `Expected ${expected} found ${unexpected}`
-        }
+    let pointer
+    // let open
+    // let expected
+    // let unexpected
+    // let openTags = input.match(openRegex)
+    // let closeTags = input.match(closeRegex).reverse()
+    let tags = input.match(tagRegex)
+    console.log('Tags', tags)
+    for (let i; i < tags.length; i++) {
+        
     }
-    return SuccessMessage
+    // while(openTags.length > 0 || closeTags.length > 0){
+    //     open = openTags.pop() || '#'
+    //     expected = generateClosingTag(open) || '#'
+    //     unexpected = closeTags.pop() || '#'
+    //     if(expected !== unexpected){
+    //        return `Expected ${expected} found ${unexpected}`
+    //     }
+    // }    
+    // return SuccessMessage    
 }
 
 
